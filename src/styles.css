@@ -1,0 +1,181 @@
+/* Step 1: Pull in Tailwind v4’s CSS-First API */
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/aspect-ratio";
+@plugin "@tailwindcss/forms";
+
+
+/* Step 2: Design tokens via @theme */
+@theme {
+  /* ────────────── Colors ────────────── */
+  --color-brand:     #8b5cf6; /*Purple, your logo / primary interactive */
+  --color-primary:   #3b82f6; /*Blue,links, buttons */
+  --color-secondary: #6b7280; /*Greyish, muted actions */
+  --color-accent:    #10b981; /*Dull-Green, highlights */
+  --color-danger:    #ef4444; /*Red, errors, destructive */
+  /* ─── Extended “note type” semantics ─── */
+  --color-info:    #93c5fd;  /*Light-Blue for informational notes */
+  --color-success: #22c55e;  /*Shiny-Green for completed/success notes */
+  --color-warning: #facc15;  /*Yellow for caution or “to-do” notes */
+  /* ─── Syntax highlighting tokens ─── */
+  --color-code-keyword:  #7c3aed; /*Purple for JS/TS keywords */
+  --color-code-string:   #059669; /*Green for string literals */
+  --color-code-comment:  #6b7280; /*Gray for comments */
+  --color-code-function: #c084fc; /*Lavender for function names */
+
+  /* ────────── Typography ────────── */
+  --font-sans: 'Inter Var', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* ───── Typography scale ───── */
+  --font-size-xs:    0.75rem;   /* text-[.75rem] → text-xs */
+  --font-size-sm:    0.875rem;  /* text-sm */
+  --font-size-base:  1rem;      /* text-base */
+  --font-size-lg:    1.125rem;  /* text-lg */
+  --font-size-xl:    1.25rem;   /* text-xl */
+  --font-size-2xl:   1.5rem;    /* text-2xl */
+  --font-size-3xl:   1.875rem;  /* text-3xl */
+  --font-size-4xl:   2.25rem;   /* text-4xl */
+
+  /* ─── Line-height tokens ─── */
+  --line-height-tight:   1.2;   /* leading-tight */
+  --line-height-snug:    1.375; /* leading-snug */
+  --line-height-normal:  1.5;   /* leading-normal */
+  --line-height-relaxed: 1.625; /* leading-relaxed */
+  --line-height-loose:   2;     /* leading-loose */
+
+  /* ─── Letter-spacing ─── */
+  --tracking-tight:  -0.05em;   /* tracking-tight */
+  --tracking-normal: 0em;       /* tracking-normal */
+  --tracking-wide:   0.05em;    /* tracking-wide */
+
+  /* ────────────── Spacing scale ────────────── */
+  --space-0:    0px;      /* gap-0, p-0, m-0 */
+  --space-1:    0.25rem;  /* gap-1, p-1, m-1 */
+  --space-2:    0.5rem;   /* gap-2, p-2, m-2 */
+  --space-3:    0.75rem;  /* gap-3, p-3, m-3 */
+  --space-4:    1rem;     /* gap-4, p-4, m-4 */
+  --space-6:    1.5rem;   /* gap-6, p-6, m-6 */
+  --space-8:    2rem;     /* gap-8, p-8, m-8 */
+
+  /* ────────── Border radius ────────── */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 1rem;
+
+  /* ────────── Shadows ────────── */
+  --shadow-sm:  0 1px 2px 0 rgba(0,0,0,0.05);
+  --shadow-md:  0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg:  0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+
+  /* ────────── Transitions ────────── */
+  --transition-normal: 200ms;
+}
+
+/* Step 3: Core CSS vars for dynamic theming */
+:root {
+  --background:        #ffffff;
+  --foreground:        #1f2937;
+  --card:              #ffffff;
+  --card-foreground:   #1f2937;
+  --muted:             #f9fafb;
+  --muted-foreground:  #6b7280;
+  --border:            #e5e7eb;
+}
+
+.dark {
+  --background:        #0f172a;
+  --foreground:        #f1f5f9;
+  --card:              #1e293b;
+  --card-foreground:   #f1f5f9;
+  --muted:             #1e293b;
+  --muted-foreground:  #94a3b8;
+  --border:            #334155;
+}
+
+/* Step 4: Map those vars into Tailwind’s theme scales */
+@theme inline {
+  /* Colors */
+  --color-background:       var(--background);
+  --color-foreground:       var(--foreground);
+  --color-card:             var(--card);
+  --color-card-foreground:  var(--card-foreground);
+  --color-muted:            var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border:           var(--border);
+
+  /* Fonts */
+  --font-family-sans: var(--font-sans);
+  --font-family-mono: var(--font-mono);
+
+  /* font sizes */
+  --font-size-xs:  var(--font-size-xs);
+  --font-size-sm:  var(--font-size-sm);
+  --font-size-base:var(--font-size-base);
+  --font-size-lg:  var(--font-size-lg);
+  --font-size-xl:  var(--font-size-xl);
+  --font-size-2xl: var(--font-size-2xl);
+  --font-size-3xl: var(--font-size-3xl);
+  --font-size-4xl: var(--font-size-4xl);
+
+  /* line heights */
+  --line-height-tight:   var(--line-height-tight);
+  --line-height-snug:    var(--line-height-snug);
+  --line-height-normal:  var(--line-height-normal);
+  --line-height-relaxed: var(--line-height-relaxed);
+  --line-height-loose:   var(--line-height-loose);
+
+  /* letter spacing */
+  --tracking-tight:   var(--tracking-tight);
+  --tracking-normal:  var(--tracking-normal);
+  --tracking-wide:    var(--tracking-wide);
+
+  /* ─── Spacing mappings ─── */
+  --space-0: var(--space-0);
+  --space-1: var(--space-1);
+  --space-2: var(--space-2);
+  --space-3: var(--space-3);
+  --space-4: var(--space-4);
+  --space-6: var(--space-6);
+  --space-8: var(--space-8);
+
+  /* Radius */
+  --border-radius-sm: var(--radius-sm);
+  --border-radius-md: var(--radius-md);
+  --border-radius-lg: var(--radius-lg);
+
+  /* Shadows */
+  --box-shadow-sm: var(--shadow-sm);
+  --box-shadow-md: var(--shadow-md);
+  --box-shadow-lg: var(--shadow-lg);
+
+  /* Transition */
+  --transition-duration: var(--transition-normal);
+}
+
+/* Step 5: Enable “dark:” variant */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Step 6: Enable “dark:” variant */
+ @custom-variant dark (&:where(.dark, .dark *));
+
+ /* Step 7: Global base styles */
+ @layer base {
+   *, *::before, *::after { box-sizing: border-box; }
+   body {
+     @apply font-sans bg-background text-foreground
+            transition-[background,color] duration-[var(--transition-duration)];
+   }
+   code, pre {
+     font-family: var(--font-family-mono);
+   }
+ }
+
+
+/* Step 8: Optional container utility – must be top-level */
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
