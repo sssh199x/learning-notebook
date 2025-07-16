@@ -1,0 +1,140 @@
+// Shake animation on hover
+.shake-animate:hover {
+  animation: shake-button 0.6s ease-in-out both;
+}
+
+.shake-animate:hover span {
+  animation: shake-content 0.6s ease-in-out both;
+  animation-delay: 0.05s;
+}
+
+@keyframes shake-button {
+  0% { transform: rotate(0deg) translate3d(0, 0, 0); }
+  20% { transform: rotate(1.5deg) translate3d(0, 0, 0); }
+  40% { transform: rotate(-1.5deg) translate3d(0, 0, 0); }
+  60% { transform: rotate(1deg) translate3d(0, 0, 0); }
+  80% { transform: rotate(-0.5deg) translate3d(0, 0, 0); }
+  100% { transform: rotate(0deg) translate3d(0, 0, 0); }
+}
+
+@keyframes shake-content {
+  0% { transform: translate3d(0, 0, 0) translateZ(0); }
+  20% { transform: translate3d(2px, 0, 0) translateZ(0); }
+  40% { transform: translate3d(-2px, 0, 0) translateZ(0); }
+  60% { transform: translate3d(1px, 0, 0) translateZ(0); }
+  80% { transform: translate3d(-0.5px, 0, 0) translateZ(0); }
+  100% { transform: translate3d(0, 0, 0) translateZ(0); }
+}
+
+// Base shine overlay
+.shine-effect::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: -75px;
+  width: 50px;
+  height: 155px;
+  transform: rotate(35deg);
+  transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+  z-index: 10;
+  opacity: 0;
+}
+
+// Shine colors for different variants using complementary colors
+// Primary (Blue) -> Shine with Cyan/Light Blue
+.shine-primary::before {
+  background: linear-gradient(45deg, 
+    transparent, 
+    rgba(56, 189, 248, 0.6),  /* Light blue */
+    rgba(125, 211, 252, 0.8), /* Lighter blue */
+    transparent
+  );
+}
+
+// Secondary (Gray) -> Shine with Silver/White  
+.shine-secondary::before {
+  background: linear-gradient(45deg, 
+    transparent, 
+    rgba(248, 250, 252, 0.7), /* Almost white */
+    rgba(226, 232, 240, 0.9), /* Light gray */
+    transparent
+  );
+}
+
+// Accent (Green) -> Shine with Light Green/Mint
+.shine-accent::before {
+  background: linear-gradient(45deg, 
+    transparent, 
+    rgba(52, 211, 153, 0.6),  /* Emerald */
+    rgba(110, 231, 183, 0.8), /* Light emerald */
+    transparent
+  );
+}
+
+// Danger (Red) -> Shine with Pink/Light Red
+.shine-danger::before {
+  background: linear-gradient(45deg, 
+    transparent, 
+    rgba(251, 113, 133, 0.6), /* Pink */
+    rgba(252, 165, 165, 0.8), /* Light pink */
+    transparent
+  );
+}
+
+// Dark mode shine adjustments
+:global(.dark) {
+  .shine-primary::before {
+    background: linear-gradient(45deg, 
+      transparent, 
+      rgba(96, 165, 250, 0.5), /* Darker blue for dark mode */
+      rgba(147, 197, 253, 0.7),
+      transparent
+    );
+  }
+
+  .shine-secondary::before {
+    background: linear-gradient(45deg, 
+      transparent, 
+      rgba(203, 213, 225, 0.5), /* Muted for dark mode */
+      rgba(226, 232, 240, 0.7),
+      transparent
+    );
+  }
+
+  .shine-accent::before {
+    background: linear-gradient(45deg, 
+      transparent, 
+      rgba(34, 197, 94, 0.5),   /* Darker green for dark mode */
+      rgba(74, 222, 128, 0.7),
+      transparent
+    );
+  }
+
+  .shine-danger::before {
+    background: linear-gradient(45deg, 
+      transparent, 
+      rgba(239, 68, 68, 0.5),   /* Darker red for dark mode */
+      rgba(248, 113, 113, 0.7),
+      transparent
+    );
+  }
+}
+
+// Shine effect on hover
+.shine-effect:hover::before {
+  opacity: 1;
+  left: 120%;
+  transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+// Enhanced focus states for accessibility
+.shine-effect:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+// Smooth transitions for all states
+.shine-effect {
+  will-change: transform;
+  backface-visibility: hidden;
+}

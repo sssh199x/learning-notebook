@@ -1,0 +1,25 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+// Backdrop blur fallback for older browsers
+:host::before {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+// Search input focus ring using design tokens
+input:focus {
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+// Search suggestions positioning
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+}

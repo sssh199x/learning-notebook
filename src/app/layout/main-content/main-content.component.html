@@ -1,0 +1,28 @@
+<div class="min-h-screen bg-background text-foreground transition-colors duration-200">
+  
+  <!-- Header - Full width-->
+  <header class="fixed top-0 left-0 right-0 h-16 bg-card/95 backdrop-blur-sm border-b border-border z-30 transition-all duration-200 shadow-sm">
+    <app-header></app-header>
+  </header>
+  
+  <!-- Sidebar Overlay -->
+  <app-sidebar 
+    class="fixed left-0 top-0 h-full z-40 transition-transform duration-200 shadow-xl"
+    [class.translate-x-0]="!sidebarCollapsed()"
+    [class.-translate-x-full]="sidebarCollapsed()">
+  </app-sidebar>
+  
+  <!-- Backdrop -->
+  <div 
+    *ngIf="!sidebarCollapsed()"
+    class="fixed inset-0 bg-black/50 z-35 transition-opacity duration-200"
+    (click)="closeSidebar()">
+  </div>
+  
+  <!-- Main Content -->
+  <main class="pt-16 min-h-screen">
+    <div class="p-6">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,185 @@
+<div class="p-6 max-w-6xl mx-auto bg-background text-foreground">
+  <!-- Welcome Header -->
+  <header class="mb-8">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 class="text-3xl font-bold text-foreground mb-2">
+          {{ greetingMessage() }}! 👋
+        </h1>
+        <p class="text-lg text-muted-foreground">
+          Ready to continue your learning journey?
+        </p>
+      </div>
+    </div>
+
+    <!-- Weekly Progress -->
+    <div class="bg-card border border-border rounded-lg p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-foreground">Weekly Learning Goal</h3>
+        <span class="text-sm text-muted-foreground">
+          {{ stats().completedToday }} / {{ stats().weeklyGoal }} notes
+        </span>
+      </div>
+      
+      <div class="w-full bg-muted rounded-full h-3 mb-2">
+        <div 
+          [class]="getProgressBarColor()"
+          class="h-3 rounded-full transition-all duration-300"
+          [style.width.%]="weeklyProgress()">
+        </div>
+      </div>
+      
+      <p class="text-sm text-muted-foreground">
+        <span class="font-medium">{{ weeklyProgress() | number:'1.0-0' }}% complete</span>
+        - Keep up the great work!
+      </p>
+    </div>
+  </header>
+
+  <!-- Stats Overview -->
+  <section class="mb-8">
+    <h2 class="text-xl font-semibold text-foreground mb-4">Overview</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- Total Notes -->
+      <div class="bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-pointer hover:border-primary">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+            <span class="text-xl">📝</span>
+          </div>
+          <span class="text-2xl font-bold text-foreground">{{ stats().totalNotes }}</span>
+        </div>
+        <h3 class="font-medium text-foreground">Total Notes</h3>
+        <p class="text-sm text-muted-foreground">Your knowledge base</p>
+      </div>
+
+      <!-- Total Notebooks -->
+      <div class="bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-pointer hover:border-primary">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+            <span class="text-xl">📁</span>
+          </div>
+          <span class="text-2xl font-bold text-foreground">{{ stats().totalNotebooks }}</span>
+        </div>
+        <h3 class="font-medium text-foreground">Notebooks</h3>
+        <p class="text-sm text-muted-foreground">Organized collections</p>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-pointer hover:border-primary">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-10 h-10 bg-warning/10 rounded-lg flex items-center justify-center">
+            <span class="text-xl">⚡</span>
+          </div>
+          <span class="text-2xl font-bold text-foreground">{{ stats().recentActivity }}</span>
+        </div>
+        <h3 class="font-medium text-foreground">Recent Activity</h3>
+        <p class="text-sm text-muted-foreground">This week</p>
+      </div>
+
+      <!-- Completed Today -->
+      <div class="bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-pointer hover:border-primary">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
+            <span class="text-xl">✅</span>
+          </div>
+          <span class="text-2xl font-bold text-foreground">{{ stats().completedToday }}</span>
+        </div>
+        <h3 class="font-medium text-foreground">Completed Today</h3>
+        <p class="text-sm text-muted-foreground">Notes reviewed</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Actions -->
+  <section class="mb-8">
+    <h2 class="text-xl font-semibold text-foreground mb-4">Quick Actions</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <button 
+        *ngFor="let action of quickActions()" 
+        [routerLink]="action.route"
+        class="bg-card border border-border rounded-lg p-6 text-left shadow-sm hover:shadow-lg hover:-translate-y-2 hover:scale-105 transition-all duration-200 group hover:border-primary">
+        
+        <div class="flex items-center mb-4">
+          <div [class]="action.color" class="w-12 h-12 rounded-lg flex items-center justify-center text-white mr-4 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-200">
+            <span class="text-xl">{{ action.icon }}</span>
+          </div>
+          <div>
+            <h3 class="font-semibold text-foreground group-hover:text-primary transition-colors">
+              {{ action.title }}
+            </h3>
+          </div>
+        </div>
+        
+        <p class="text-sm text-muted-foreground">{{ action.description }}</p>
+      </button>
+    </div>
+  </section>
+
+  <!-- Recent Notes -->
+  <section>
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-semibold text-foreground">Recent Notes</h2>
+      <button 
+        (click)="viewAllNotes()"
+        class="text-sm text-primary hover:opacity-80 font-medium transition-opacity">
+        View All →
+      </button>
+    </div>
+    
+    <div class="space-y-4">
+      <div 
+        *ngFor="let note of recentNotes()" 
+        class="bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-primary transition-all duration-200 group cursor-pointer">
+        
+        <!-- Note Header -->
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex-1">
+            <h3 class="font-semibold text-foreground group-hover:text-primary transition-colors mb-1">
+              {{ note.title }}
+            </h3>
+            <div class="flex items-center gap-2 text-sm text-muted-foreground">
+              <span>📁 {{ note.notebook }}</span>
+              <span>•</span>
+              <span>{{ getTimeAgo(note.lastModified) }}</span>
+            </div>
+          </div>
+          
+          <button class="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-muted rounded">
+            <span class="text-sm">⋯</span>
+          </button>
+        </div>
+
+        <!-- Note Excerpt -->
+        <p class="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
+          {{ note.excerpt }}
+        </p>
+
+        <!-- Tags -->
+        <div class="flex items-center gap-2 flex-wrap">
+          <span 
+            *ngFor="let tag of note.tags" 
+            class="inline-flex items-center px-2 py-1 bg-muted text-muted-foreground text-xs rounded-full font-medium">
+            #{{ tag }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="recentNotes().length === 0" class="text-center py-12">
+      <div class="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+        <span class="text-2xl">📝</span>
+      </div>
+      <h3 class="text-lg font-medium text-foreground mb-2">No notes yet</h3>
+      <p class="text-muted-foreground mb-4">Start your learning journey by creating your first note</p>
+      <button 
+        (click)="createNewNote()"
+        class="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity">
+        Create First Note
+      </button>
+    </div>
+  </section>
+
+</div>

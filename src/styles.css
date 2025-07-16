@@ -69,6 +69,11 @@
   --shadow-md:  0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
   --shadow-lg:  0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
 
+  /* ────────── Elevation ────────── */
+  --shadow-xl:   0 20px 25px -5px rgba(0,0,0,0.1),   0 10px 10px -5px rgba(0,0,0,0.04);
+  --shadow-2xl:  0 25px 50px -12px rgba(0,0,0,0.25);
+
+
   /* ────────── Transitions ────────── */
   --transition-normal: 200ms;
 }
@@ -149,6 +154,8 @@
   --box-shadow-sm: var(--shadow-sm);
   --box-shadow-md: var(--shadow-md);
   --box-shadow-lg: var(--shadow-lg);
+  --box-shadow-xl: var(--shadow-xl);
+  --box-shadow-2xl: var(--shadow-2xl);
 
   /* Transition */
   --transition-duration: var(--transition-normal);
@@ -156,9 +163,6 @@
 
 /* Step 5: Enable “dark:” variant */
 @custom-variant dark (&:where(.dark, .dark *));
-
-/* Step 6: Enable “dark:” variant */
- @custom-variant dark (&:where(.dark, .dark *));
 
  /* Step 7: Global base styles */
  @layer base {
@@ -178,4 +182,3 @@
   margin-inline: auto;
   padding-inline: 1rem;
 }
-

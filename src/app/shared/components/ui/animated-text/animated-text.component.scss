@@ -1,0 +1,97 @@
+/* src/app/shared/components/ui/animated-text/animated-text.component.scss */
+/* Using your design tokens with minimal SCSS for text stroke animation */
+
+// Base animated text styles
+.animated-text {
+  position: relative;
+  
+  .actual-text {
+    // Text stroke using webkit properties (browser standard)
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: var(--muted-foreground);
+  }
+  
+  .hover-text {
+    width: 0%;
+    border-right: 4px solid transparent;
+    box-sizing: border-box;
+    
+    // Smooth transition
+    transition: width 0.5s ease-in-out, filter 0.3s ease-in-out;
+  }
+  
+  // Hover effect
+  &:hover .hover-text {
+    width: 100%;
+    filter: drop-shadow(0 0 15px currentColor);
+  }
+}
+
+// Color variants using your design tokens
+.animated-text-primary {
+  .hover-text {
+    color: var(--color-primary);
+    border-right-color: var(--color-primary);
+    -webkit-text-stroke-color: var(--color-primary);
+  }
+}
+
+.animated-text-brand {
+  .hover-text {
+    color: var(--color-brand);
+    border-right-color: var(--color-brand);
+    -webkit-text-stroke-color: var(--color-brand);
+  }
+}
+
+.animated-text-accent {
+  .hover-text {
+    color: var(--color-accent);
+    border-right-color: var(--color-accent);
+    -webkit-text-stroke-color: var(--color-accent);
+  }
+}
+
+.animated-text-success {
+  .hover-text {
+    color: var(--color-success);
+    border-right-color: var(--color-success);
+    -webkit-text-stroke-color: var(--color-success);
+  }
+}
+
+.animated-text-warning {
+  .hover-text {
+    color: var(--color-warning);
+    border-right-color: var(--color-warning);
+    -webkit-text-stroke-color: var(--color-warning);
+  }
+}
+
+.animated-text-info {
+  .hover-text {
+    color: var(--color-info);
+    border-right-color: var(--color-info);
+    -webkit-text-stroke-color: var(--color-info);
+  }
+}
+
+// Stroke width variants
+.stroke-1 .actual-text {
+  -webkit-text-stroke-width: 1px;
+}
+
+.stroke-2 .actual-text {
+  -webkit-text-stroke-width: 2px;
+}
+
+.stroke-3 .actual-text {
+  -webkit-text-stroke-width: 3px;
+}
+
+// Dark mode adjustments
+:global(.dark) {
+  .animated-text .actual-text {
+    -webkit-text-stroke-color: var(--muted-foreground);
+  }
+}

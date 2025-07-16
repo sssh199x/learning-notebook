@@ -1,0 +1,31 @@
+<div class="theme-toggle-container" [attr.data-variant]="variant" [attr.data-size]="size">
+  
+  <!-- Icon Only Variant -->
+  <button 
+    *ngIf="variant === 'icon-only'"
+    (click)="themeService.toggleTheme()"
+    [class]="getIconButtonClasses()"
+    [attr.aria-label]="'Toggle theme'"
+    class="flex items-center justify-center rounded-full transition-all duration-200 hover:scale-110 hover:shadow-md">
+    <span [ngClass]="getIconSizeClasses()" 
+          class="transition-transform duration-300" 
+          [class.rotate-180]="themeService.isDarkMode()">
+      {{ getCurrentIcon() }}
+    </span>
+  </button>
+
+  <!-- Switch Variant - Toggle switch style (no text labels) -->
+  <button
+    *ngIf="variant === 'switch'"
+    (click)="themeService.toggleTheme()"
+    [class]="getSwitchClasses()"
+    [attr.aria-label]="'Toggle dark mode'"
+    class="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 hover:shadow-md">
+    <span [class]="getSwitchKnobClasses()">
+      <span class="flex items-center justify-center h-full w-full" [ngClass]="getSwitchIconClasses()">
+        {{ themeService.isDarkMode() ? '🌙' : '☀️' }}
+      </span>
+    </span>
+  </button>
+
+</div>

@@ -1,0 +1,13 @@
+<span [class]="textClasses">
+  <!-- Actual Text (stroke only) -->
+  <span class="actual-text text-transparent">
+    &nbsp;{{ text }}&nbsp;
+  </span>
+  
+  <!-- Hover Text (fills on hover) -->
+  <span 
+    class="hover-text absolute inset-0 overflow-hidden transition-all duration-500"
+    aria-hidden="true">
+    &nbsp;{{ text }}&nbsp;
+  </span>
+</span>

@@ -1,0 +1,96 @@
+.theme-toggle-container {
+  display: inline-flex;
+  align-items: center;
+
+  /* Hover effects using your design tokens */
+  button {
+    transition: 
+      transform var(--transition-duration) ease,
+      box-shadow var(--transition-duration) ease,
+      background-color var(--transition-duration) ease,
+      border-color var(--transition-duration) ease;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+      border-radius: var(--radius-md);
+    }
+  }
+
+  /* Animation for rotating icons */
+  .rotate-180 {
+    transform: rotate(180deg);
+  }
+
+  /* Icon-only variant styling */
+  &[data-variant="icon-only"] {
+    button {
+      box-shadow: var(--shadow-sm);
+      
+      &:hover {
+        box-shadow: var(--shadow-lg);
+      }
+    }
+  }
+
+  /* Switch variant styling */
+  &[data-variant="switch"] {
+    button {
+      box-shadow: var(--shadow-sm);
+      
+      &:hover {
+        box-shadow: var(--shadow-md);
+      }
+    }
+  }
+
+  /* Active states using your color tokens */
+  .bg-background {
+    background-color: var(--background);
+    color: var(--foreground);
+    border-color: var(--border);
+  }
+
+  .bg-muted {
+    background-color: var(--muted);
+    
+    &:hover {
+      background-color: var(--card);
+    }
+  }
+
+  /* Switch specific styling */
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+
+  /* Focus ring using primary color */
+  button:focus-visible {
+    outline-color: var(--color-primary);
+  }
+
+  /* Smooth transitions for all interactive elements */
+  * {
+    transition: 
+      background-color var(--transition-duration) ease,
+      color var(--transition-duration) ease,
+      border-color var(--transition-duration) ease,
+      transform var(--transition-duration) ease,
+      box-shadow var(--transition-duration) ease;
+  }
+
+  /* Custom width for large switch (since w-13 doesn't exist in default Tailwind) */
+  &[data-size="lg"] {
+    .h-7 {
+      width: 3.25rem; /* 52px - equivalent to w-13 */
+    }
+  }
+}

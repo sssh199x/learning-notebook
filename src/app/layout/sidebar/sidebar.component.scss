@@ -1,0 +1,28 @@
+.active-nav-item {
+  background-color: var(--muted);
+  color: var(--foreground);
+  border-left: 3px solid var(--color-primary);
+}
+
+// Custom scrollbar for navigation
+nav {
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted) transparent;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--muted);
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--border);
+  }
+}
