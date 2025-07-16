@@ -1,0 +1,107 @@
+<div 
+  [class]="cardClasses()"
+  (click)="onCardClick()"
+  [attr.aria-label]="accessibilityLabel()"
+  [attr.role]="'article'"
+  [attr.tabindex]="0"
+  (keydown.enter)="onCardClick()"
+  (keydown.space)="onCardClick()">
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="animate-pulse">
+    <!-- Header skeleton -->
+    <div class="flex items-start justify-between mb-4">
+      <div class="flex-1 min-w-0">
+        <div class="w-3/4 h-5 bg-muted rounded mb-2"></div>
+        <div class="flex items-center gap-3">
+          <div class="w-20 h-4 bg-muted rounded"></div>
+          <div class="w-16 h-4 bg-muted rounded"></div>
+        </div>
+      </div>
+      <div class="w-8 h-8 bg-muted rounded"></div>
+    </div>
+    
+    <!-- Progress skeleton -->
+    <div class="mb-4">
+      <div class="flex justify-between mb-2">
+        <div class="w-24 h-3 bg-muted rounded"></div>
+        <div class="w-8 h-3 bg-muted rounded"></div>
+      </div>
+      <div class="w-full h-2 bg-muted rounded"></div>
+    </div>
+    
+    <!-- Content skeleton -->
+    <div class="space-y-2 mb-4">
+      <div class="w-full h-3 bg-muted rounded"></div>
+      <div class="w-5/6 h-3 bg-muted rounded"></div>
+      <div class="w-4/6 h-3 bg-muted rounded"></div>
+    </div>
+    
+    <!-- Tags skeleton -->
+    <div class="flex gap-2">
+      <div class="w-12 h-5 bg-muted rounded-full"></div>
+      <div class="w-16 h-5 bg-muted rounded-full"></div>
+      <div class="w-14 h-5 bg-muted rounded-full"></div>
+    </div>
+  </div>
+
+  <!-- Card Content -->
+  <div *ngIf="!loading">
+    
+    <!-- Note Header -->
+    <div class="flex items-start justify-between mb-4">
+      <div class="flex-1 min-w-0">
+        <h3 class="font-semibold text-foreground group-hover:text-primary transition-colors mb-2 truncate">
+          {{ title }}
+        </h3>
+        <div class="flex items-center gap-3 text-sm">
+          <span 
+            *ngIf="notebook" 
+            [class]="notebookBadgeClasses()">
+            📁 {{ notebook }}
+          </span>
+          <span class="text-muted-foreground">{{ formattedLastModified() }}</span>
+        </div>
+      </div>
+      
+      <button 
+        class="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-muted rounded-lg"
+        (click)="onMenuClick($event)"
+        [attr.aria-label]="'Note options for ' + title"
+        [attr.title]="'Note options'">
+        <span class="text-lg">⋯</span>
+      </button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div *ngIf="progress > 0" class="mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs text-muted-foreground">Reading Progress</span>
+        <span class="text-xs font-medium text-foreground">{{ progressPercentage() }}%</span>
+      </div>
+      <div class="w-full bg-muted rounded-full h-2">
+        <div 
+          [class]="progressBarClasses()"
+          [style.width.%]="progressPercentage()">
+        </div>
+      </div>
+    </div>
+
+    <!-- Note Excerpt -->
+    <p class="text-sm text-muted-foreground mb-4 line-clamp-3 leading-relaxed">
+      {{ excerpt }}
+    </p>
+
+    <!-- Tags -->
+    <div *ngIf="tags.length > 0" class="flex items-center gap-2 flex-wrap">
+      <span 
+        *ngFor="let tag of tags; trackBy: trackByTag" 
+        class="inline-flex items-center px-2 py-1 bg-muted text-muted-foreground text-xs rounded-full font-medium hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer"
+        (click)="onTagClick($event, tag)"
+        [attr.aria-label]="'Filter by tag: ' + tag"
+        [attr.title]="'Click to search by tag: ' + tag">
+        #{{ tag }}
+      </span>
+    </div>
+  </div>
+</div>

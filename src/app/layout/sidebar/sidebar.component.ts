@@ -1,4 +1,3 @@
-// UPDATED: src/app/layout/sidebar/sidebar.component.ts
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';

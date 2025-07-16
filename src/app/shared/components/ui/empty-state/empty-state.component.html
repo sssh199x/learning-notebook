@@ -1,0 +1,87 @@
+<div 
+  [class]="containerClasses()"
+  [attr.aria-label]="accessibilityLabel()"
+  [attr.role]="'region'"
+  [attr.aria-live]="loading ? 'polite' : undefined">
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="animate-pulse">
+    <!-- Icon skeleton -->
+    <div [class]="iconContainerClasses()">
+      <div class="w-8 h-8 bg-muted rounded"></div>
+    </div>
+    
+    <!-- Title skeleton -->
+    <div class="mb-4 flex justify-center">
+      <div class="w-32 h-6 bg-muted rounded"></div>
+    </div>
+    
+    <!-- Description skeleton -->
+    <div class="mb-6 flex flex-col items-center gap-2">
+      <div class="w-48 h-4 bg-muted rounded"></div>
+      <div class="w-40 h-4 bg-muted rounded"></div>
+      <div class="w-44 h-4 bg-muted rounded"></div>
+    </div>
+    
+    <!-- Action button skeleton -->
+    <div *ngIf="showAction" class="flex justify-center gap-3">
+      <div class="w-32 h-10 bg-muted rounded"></div>
+      <div *ngIf="hasSecondaryAction()" class="w-28 h-10 bg-muted rounded"></div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading">
+    
+    <!-- Icon Container -->
+    <div [class]="iconContainerClasses()">
+      <span [class]="iconClasses()">
+        {{ icon }}
+      </span>
+    </div>
+    
+    <!-- Title -->
+    <h3 [class]="titleClasses()">
+      {{ title }}
+    </h3>
+    
+    <!-- Description -->
+    <p [class]="descriptionClasses()">
+      {{ description }}
+    </p>
+    
+    <!-- Actions -->
+    <div *ngIf="hasActions()" class="flex flex-col sm:flex-row items-center justify-center gap-3">
+      
+      <!-- Primary Action -->
+      <app-button 
+        *ngIf="actionText"
+        [variant]="actionVariant"
+        [size]="actionButtonSize()"
+        [icon]="actionIcon"
+        [shine]="actionShine"
+        [disabled]="disabled"
+        (clicked)="onActionClick()"
+        [attr.aria-label]="actionText">
+        {{ actionText }}
+      </app-button>
+      
+      <!-- Secondary Action -->
+      <app-button 
+        *ngIf="hasSecondaryAction()"
+        [variant]="secondaryActionVariant"
+        [size]="actionButtonSize()"
+        [icon]="secondaryActionIcon"
+        [disabled]="disabled"
+        (clicked)="onSecondaryActionClick()"
+        [attr.aria-label]="secondaryActionText">
+        {{ secondaryActionText }}
+      </app-button>
+    </div>
+    
+    <!-- Custom Content Slot -->
+    <div class="mt-6">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

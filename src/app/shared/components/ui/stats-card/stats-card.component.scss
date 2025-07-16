@@ -1,0 +1,100 @@
+
+
+:host {
+  display: block;
+  height: 100%; // Ensure host takes full height in grid
+}
+
+// Consistent card heights
+.stats-card {
+  height: 100%;
+  min-height: 140px; // Ensure minimum height for consistency
+  display: flex;
+  flex-direction: column;
+}
+
+// Enhanced hover effects using your design tokens
+.stats-card {
+  // Smooth multi-property transitions
+  transition: 
+    transform var(--transition-duration) ease,
+    box-shadow var(--transition-duration) ease,
+    border-color var(--transition-duration) ease;
+  
+  // Subtle hover lift with easing
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  // Clickable variant specific styles
+  &.clickable {
+    cursor: pointer;
+    
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+      border-radius: var(--radius-md);
+    }
+  }
+}
+
+// Icon container scaling animation
+.icon-container {
+  transition: transform var(--transition-duration) ease;
+}
+
+.stats-card:hover .icon-container {
+  transform: scale(1.1);
+}
+
+.stats-card:active .icon-container {
+  transform: scale(1.05);
+}
+
+// Variant-specific hover border effects (can't be done with Tailwind utilities)
+.stats-card.variant-primary:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-primary);
+}
+
+.stats-card.variant-accent:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-accent);
+}
+
+.stats-card.variant-success:hover {
+  border-color: var(--color-success);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-success);
+}
+
+.stats-card.variant-warning:hover {
+  border-color: var(--color-warning);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-warning);
+}
+
+.stats-card.variant-info:hover {
+  border-color: var(--color-info);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-info);
+}
+
+.stats-card.variant-secondary:hover {
+  border-color: var(--color-secondary);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-secondary);
+}
+
+// Accessibility: Reduce motion for users who prefer it
+@media (prefers-reduced-motion: reduce) {
+  .stats-card,
+  .icon-container {
+    transition: none !important;
+    transform: none !important;
+  }
+  
+  .stats-card:hover {
+    transform: none !important;
+  }
+}

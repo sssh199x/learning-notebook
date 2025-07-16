@@ -1,4 +1,4 @@
-/* Step 1: Pull in Tailwind v4’s CSS-First API */
+/* Pull in Tailwind v4’s CSS-First API */
 @import "tailwindcss";
 
 @plugin "@tailwindcss/typography";
@@ -6,7 +6,7 @@
 @plugin "@tailwindcss/forms";
 
 
-/* Step 2: Design tokens via @theme */
+/* Design tokens via @theme */
 @theme {
   /* ────────────── Colors ────────────── */
   --color-brand:     #8b5cf6; /*Purple, your logo / primary interactive */
@@ -78,7 +78,7 @@
   --transition-normal: 200ms;
 }
 
-/* Step 3: Core CSS vars for dynamic theming */
+/* Core CSS vars for dynamic theming */
 :root {
   --background:        #ffffff;
   --foreground:        #1f2937;
@@ -99,7 +99,7 @@
   --border:            #334155;
 }
 
-/* Step 4: Map those vars into Tailwind’s theme scales */
+/* Map those vars into Tailwind’s theme scales */
 @theme inline {
   /* Colors */
   --color-background:       var(--background);
@@ -161,7 +161,7 @@
   --transition-duration: var(--transition-normal);
 }
 
-/* Step 5: Enable “dark:” variant */
+/* Enable “dark:” variant */
 @custom-variant dark (&:where(.dark, .dark *));
 
  /* Step 7: Global base styles */
@@ -177,7 +177,7 @@
  }
 
 
-/* Step 8: Optional container utility – must be top-level */
+/* Optional container utility – must be top-level */
 @utility container {
   margin-inline: auto;
   padding-inline: 1rem;

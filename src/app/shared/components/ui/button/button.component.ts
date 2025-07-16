@@ -1,7 +1,8 @@
+// src/app/shared/components/ui/button/button.component.ts
 import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-type ButtonVariant = 'primary' | 'secondary' | 'accent' | 'danger';
+type ButtonVariant = 'primary' | 'secondary' | 'accent' | 'danger' | 'success' | 'warning' | 'info';
 type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 
 @Component({
@@ -19,7 +20,7 @@ export class ButtonComponent {
   @Input() shine = false;
   @Input() icon?: string;
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
-  @Input() fullWidth = false; // Input for explicit full width
+  @Input() fullWidth = false; // New input for explicit full width
   
   @Output() clicked = new EventEmitter<void>();
 
@@ -55,6 +56,24 @@ export class ButtonComponent {
         hover:bg-danger/90 hover:border-danger/30 hover:shadow-lg hover:shadow-danger/25
         focus:ring-danger/30 active:bg-danger/95 active:scale-[0.98]
         dark:bg-danger dark:hover:bg-danger/85 dark:shadow-danger/20
+      `,
+      success: `
+        bg-success text-white border border-success/20 
+        hover:bg-success/90 hover:border-success/30 hover:shadow-lg hover:shadow-success/25
+        focus:ring-success/30 active:bg-success/95 active:scale-[0.98]
+        dark:bg-success dark:hover:bg-success/85 dark:shadow-success/20
+      `,
+      warning: `
+        bg-warning text-white border border-warning/20 
+        hover:bg-warning/90 hover:border-warning/30 hover:shadow-lg hover:shadow-warning/25
+        focus:ring-warning/30 active:bg-warning/95 active:scale-[0.98]
+        dark:bg-warning dark:hover:bg-warning/85 dark:shadow-warning/20
+      `,
+      info: `
+        bg-info text-white border border-info/20 
+        hover:bg-info/90 hover:border-info/30 hover:shadow-lg hover:shadow-info/25
+        focus:ring-info/30 active:bg-info/95 active:scale-[0.98]
+        dark:bg-info dark:hover:bg-info/85 dark:shadow-info/20
       `
     };
 
