@@ -1,0 +1,216 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+// Consistent card heights for responsive grids
+.action-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  
+  // Enhanced transitions using your design tokens
+  transition: 
+    transform var(--transition-duration) ease,
+    box-shadow var(--transition-duration) ease,
+    border-color var(--transition-duration) ease;
+
+  // Following stats-card hover pattern
+  &:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-md);
+  }
+
+  // Ensure content takes full height
+  > a, > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+// Icon scaling animation
+.group:hover {
+  .transition-transform {
+    transform: scale(1.1);
+  }
+}
+
+// Variant-specific hover border effects
+.hover\:border-primary\/60:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-primary);
+}
+
+.hover\:border-accent\/60:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-accent);
+}
+
+.hover\:border-success\/60:hover {
+  border-color: var(--color-success);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-success);
+}
+
+.hover\:border-info\/60:hover {
+  border-color: var(--color-info);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-info);
+}
+
+.hover\:border-warning\/60:hover {
+  border-color: var(--color-warning);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-warning);
+}
+
+.hover\:border-secondary\/60:hover {
+  border-color: var(--color-secondary);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-secondary);
+}
+
+// Focus ring variants (following your design system)
+.focus-within\:border-primary {
+  &:focus-within {
+    border-color: var(--color-primary);
+  }
+}
+
+.focus-within\:border-accent {
+  &:focus-within {
+    border-color: var(--color-accent);
+  }
+}
+
+.focus-within\:border-success {
+  &:focus-within {
+    border-color: var(--color-success);
+  }
+}
+
+.focus-within\:border-info {
+  &:focus-within {
+    border-color: var(--color-info);
+  }
+}
+
+.focus-within\:border-warning {
+  &:focus-within {
+    border-color: var(--color-warning);
+  }
+}
+
+.focus-within\:border-secondary {
+  &:focus-within {
+    border-color: var(--color-secondary);
+  }
+}
+
+// Badge styling enhancements
+.bg-white\/20 {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  
+  // Subtle badge animations
+  transition: 
+    transform var(--transition-duration) ease,
+    background-color var(--transition-duration) ease;
+
+  .group:hover & {
+    transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+// Loading skeleton animations
+.animate-pulse {
+  height: 100%;
+  
+  // Ensure skeleton takes full height like actual cards
+  > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+// Router link styling (remove default link styles)
+a {
+  text-decoration: none;
+  color: inherit;
+  
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  &:focus {
+    outline: none; // Parent handles focus ring
+  }
+}
+
+// Disabled state styling
+.opacity-50 {
+  pointer-events: none;
+  
+  .group:hover & {
+    transform: none; // Disable hover animations
+  }
+}
+
+// Accessibility: Reduce motion for users who prefer it
+@media (prefers-reduced-motion: reduce) {
+  .action-card,
+  .transition-transform,
+  .transition-all,
+  .bg-white\/20 {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+  
+  .action-card:hover {
+    transform: none !important;
+  }
+  
+  .group:hover .transition-transform {
+    transform: none !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .action-card {
+    border-width: 2px;
+    
+    &:hover {
+      border-width: 3px;
+    }
+  }
+  
+  .bg-white\/20 {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+// Dark mode specific adjustments
+:global(.dark) {
+  .bg-white\/20 {
+    background-color: rgba(255, 255, 255, 0.1);
+    
+    .group:hover & {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}

@@ -1,14 +1,12 @@
-
-
 :host {
   display: block;
-  height: 100%; // Ensure host takes full height in grid
+  height: 100%; // Ensures host takes full height in grid
 }
 
 // Consistent card heights
 .stats-card {
   height: 100%;
-  min-height: 140px; // Ensure minimum height for consistency
+  min-height: 140px; // Ensures minimum height for consistency
   display: flex;
   flex-direction: column;
 }

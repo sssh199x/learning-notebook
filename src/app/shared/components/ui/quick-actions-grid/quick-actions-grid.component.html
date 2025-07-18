@@ -1,0 +1,93 @@
+<div [class]="gridClasses()">
+
+  <!-- Loading Skeleton -->
+  <div 
+    *ngIf="loading"
+    class="animate-pulse"
+    [class]="actionCardClasses()">
+    <div [class]="contentClasses()">
+      <!-- Icon skeleton -->
+      <div class="w-12 h-12 bg-muted rounded-lg mb-3"></div>
+      <!-- Title skeleton -->
+      <div class="w-20 h-4 bg-muted rounded mb-2"></div>
+      <!-- Description skeleton -->
+      <div class="w-24 h-3 bg-muted rounded"></div>
+    </div>
+  </div>
+
+  <!-- Action Cards -->
+  <ng-container *ngIf="!loading">
+    <div
+      *ngFor="let action of actions; trackBy: trackByAction"
+      [class]="actionCardClasses() + ' ' + getVariantClasses(action.variant)"
+      [attr.aria-label]="getAccessibilityLabel(action)"
+      [attr.role]="'button'"
+      [attr.tabindex]="action.disabled ? -1 : 0"
+      [attr.aria-disabled]="action.disabled"
+      (click)="onActionClick(action)"
+      (keydown.enter)="onActionClick(action)"
+      (keydown.space)="onActionClick(action)">
+
+      <!-- Router Link (if route provided) -->
+      <a 
+        *ngIf="action.route && !action.disabled; else actionHandler"
+        [routerLink]="action.route"
+        [class]="contentClasses()"
+        [attr.aria-label]="getAccessibilityLabel(action)">
+        
+        <!-- Icon -->
+        <div [class]="iconClasses()">
+          {{ action.icon }}
+        </div>
+        
+        <!-- Title with Badge -->
+        <h3 [class]="titleClasses()">
+          {{ action.title }}
+          <span 
+            *ngIf="action.badge" 
+            [class]="badgeClasses()">
+            {{ action.badge }}
+          </span>
+        </h3>
+        
+        <!-- Description -->
+        <p [class]="descriptionClasses()">
+          {{ action.description }}
+        </p>
+      </a>
+
+      <!-- Action Handler Template (if no route, use event emission) -->
+      <ng-template #actionHandler>
+        <div 
+          [class]="contentClasses()"
+          [class.opacity-50]="action.disabled"
+          [class.cursor-not-allowed]="action.disabled">
+          
+          <!-- Icon -->
+          <div [class]="iconClasses()">
+            {{ action.icon }}
+          </div>
+          
+          <!-- Title with Badge -->
+          <h3 [class]="titleClasses()">
+            {{ action.title }}
+            <span 
+              *ngIf="action.badge" 
+              [class]="badgeClasses()">
+              {{ action.badge }}
+            </span>
+          </h3>
+          
+          <!-- Description -->
+          <p [class]="descriptionClasses()">
+            {{ action.description }}
+          </p>
+        </div>
+      </ng-template>
+
+      <!-- Hover Effect Overlay -->
+      <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"></div>
+    </div>
+  </ng-container>
+
+</div>

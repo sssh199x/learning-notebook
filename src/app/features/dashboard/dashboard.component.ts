@@ -1,18 +1,18 @@
-// src/app/features/dashboard/dashboard.component.ts
 import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs/operators';
 
 import { AnimatedTextComponent } from '../../shared/components/ui/animated-text/animated-text.component';
 import { ButtonComponent } from '../../shared/components/ui/button/button.component';
-import { LocalStorageService, DashboardStats } from '../../core/services/storage/local-storage.service';
+import { LocalStorageService, } from '../../core/services/storage/local-storage.service';
 import { Note, Notebook } from '../../core/models';
 import { StatsCardComponent } from '../../shared/components/ui/stats-card/stats-card.component';
 import { NoteCardComponent } from "../../shared/components/ui/note-card/note-card.component";
 import { EmptyStateComponent } from "../../shared/components/ui/empty-state/empty-state.component";
-
+import { AIInsightCardComponent, AIInsightData } from '../../shared/components/ui/ai-insight-card/ai-insight-card.component';
+import { ProgressCardComponent, ProgressData } from '../../shared/components/ui/progress-card/progress-card.component';
+import { QuickActionsGridComponent, QuickAction } from '../../shared/components/ui/quick-actions-grid/quick-actions-grid.component';
 
 // Dashboard-specific interfaces (converted from storage data)
 interface RecentNote {
@@ -27,27 +27,21 @@ interface RecentNote {
   readingTime?: number; // Add missing reading time property
 }
 
-interface QuickAction {
-  icon: string;
-  title: string;
-  description: string;
-  route: string;
-  variant: 'primary' | 'accent' | 'success' | 'info';
-  badge?: number;
-}
-
-interface AIInsight {
-  type: 'suggestion' | 'achievement' | 'reminder';
-  title: string;
-  description: string;
-  action?: string;
-  icon: string;
-}
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, AnimatedTextComponent, ButtonComponent, StatsCardComponent, NoteCardComponent, EmptyStateComponent],
+  imports: [
+    CommonModule, 
+    AnimatedTextComponent, 
+    ButtonComponent, 
+    StatsCardComponent, 
+    NoteCardComponent, 
+    EmptyStateComponent,
+    AIInsightCardComponent,
+    ProgressCardComponent,
+    QuickActionsGridComponent
+  ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
@@ -86,9 +80,10 @@ export class DashboardComponent implements OnInit {
       .map(note => this.convertNoteToRecentNote(note, notebookMap));
   });
 
-  // Static data (these would come from other services in a real app)
+  // Updated to use imported QuickAction interface
   private _quickActions = signal<QuickAction[]>([
     {
+      id: 'new-note',
       icon: '✍️',
       title: 'New Note',
       description: 'Start writing a new note',
@@ -96,6 +91,7 @@ export class DashboardComponent implements OnInit {
       variant: 'primary'
     },
     {
+      id: 'browse-notebooks',
       icon: '📁',
       title: 'Browse Notebooks', 
       description: 'Explore your notebooks',
@@ -103,6 +99,7 @@ export class DashboardComponent implements OnInit {
       variant: 'accent'
     },
     {
+      id: 'search-notes',
       icon: '🔍',
       title: 'Search Notes',
       description: 'Find specific content',
@@ -110,6 +107,7 @@ export class DashboardComponent implements OnInit {
       variant: 'info'
     },
     {
+      id: 'ai-insights',
       icon: '🤖',
       title: 'AI Insights',
       description: 'Get learning recommendations',
@@ -119,7 +117,8 @@ export class DashboardComponent implements OnInit {
     }
   ]);
 
-  private _aiInsights = signal<AIInsight[]>([
+  // Updated AI insights to use AIInsightData interface
+  private _aiInsights = signal<AIInsightData[]>([
     {
       type: 'suggestion',
       title: 'Review Machine Learning Notes',
@@ -132,6 +131,7 @@ export class DashboardComponent implements OnInit {
       title: '7-Day Streak! 🔥',
       description: 'Congratulations! You\'ve been learning consistently for a week.',
       icon: '🏆'
+      // No action for achievements
     },
     {
       type: 'reminder',
@@ -146,12 +146,6 @@ export class DashboardComponent implements OnInit {
   public readonly quickActions = this._quickActions.asReadonly();
   public readonly aiInsights = this._aiInsights.asReadonly();
 
-  // Enhanced computed values
-  public readonly weeklyProgress = computed(() => {
-    const statsValue = this.stats();
-    return Math.min((statsValue.completedToday / statsValue.weeklyGoal) * 100, 100);
-  });
-
   public readonly greetingMessage = computed(() => {
     const hour = new Date().getHours();
     if (hour < 12) return 'Good morning';
@@ -164,15 +158,6 @@ export class DashboardComponent implements OnInit {
     if (hour < 12) return '🌅';
     if (hour < 17) return '👋';
     return '🌙';
-  });
-
-  public readonly progressMotivation = computed(() => {
-    const progress = this.weeklyProgress();
-    if (progress >= 100) return 'Goal achieved! 🎉';
-    if (progress >= 80) return 'Almost there! 💪';
-    if (progress >= 50) return 'Great progress! 🚀';
-    if (progress >= 25) return 'Keep it up! 📈';
-    return 'Let\'s get started! ✨';
   });
 
   ngOnInit(): void {
@@ -244,14 +229,6 @@ export class DashboardComponent implements OnInit {
     return date.toLocaleDateString();
   }
 
-  getProgressBarColor(): string {
-    const progress = this.weeklyProgress();
-    if (progress >= 100) return 'bg-success';
-    if (progress >= 80) return 'bg-accent';
-    if (progress >= 50) return 'bg-warning';
-    return 'bg-primary';
-  }
-
   getNotebookColorClasses(color: string): string {
     const colorMap = {
       primary: 'bg-primary/10 text-primary',
@@ -265,7 +242,7 @@ export class DashboardComponent implements OnInit {
 
   // ================== ACTION METHODS ==================
 
-  async createNewNote(): Promise<void> {
+  async createNewNote(progressData?: ProgressData): Promise<void> {
     try {
       // Get the first available notebook for the new note
       const notebooks = this.notebooksSignal();
@@ -311,6 +288,11 @@ export class DashboardComponent implements OnInit {
 
       // Navigate to editor with the new note
       this.router.navigate(['/editor', newNote.id]);
+      
+      // Optional: Log progress action
+      if (progressData) {
+        console.log('Note created from progress card:', progressData);
+      }
     } catch (error) {
       console.error('Failed to create new note:', error);
     }
@@ -345,8 +327,11 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  handleAIInsightAction(insight: AIInsight): void {
+  // ================== AI INSIGHT HANDLERS ==================
+
+  handleAIInsightAction(insight: AIInsightData): void {
     console.log('AI Insight action:', insight);
+    
     // Handle different insight actions based on type
     switch (insight.type) {
       case 'suggestion':
@@ -359,8 +344,59 @@ export class DashboardComponent implements OnInit {
         break;
       case 'achievement':
         // Maybe show a celebration modal or navigate to stats
+        console.log('🎉 Achievement unlocked:', insight.title);
+        break;
+      case 'info':
+        // Navigate to info/help page
+        this.router.navigate(['/help']);
+        break;
+      case 'warning':
+        // Handle warnings appropriately
+        console.warn('⚠️ Warning:', insight.title);
         break;
     }
+  }
+
+  onAIInsightCardClick(insight: AIInsightData): void {
+    console.log('AI Insight card clicked:', insight);
+    // Handle card click - maybe navigate to detail view or expand
+    // For now, treat it the same as action click if no specific action
+    if (!insight.action) {
+      this.handleAIInsightAction(insight);
+    }
+  }
+
+  // ================== QUICK ACTION HANDLERS ==================
+
+  handleQuickAction(action: QuickAction): void {
+    console.log('Quick action clicked:', action);
+    
+    // Since all your actions have routes, this is mainly for analytics
+    this.trackQuickActionUsage(action);
+  }
+
+  private trackQuickActionUsage(action: QuickAction): void {
+    // Track which quick actions are used most
+    console.log('Analytics: Quick action used', {
+      id: action.id,
+      title: action.title,
+      route: action.route,
+      variant: action.variant,
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  // ================== PROGRESS HANDLERS ==================
+
+  onProgressClick(progressData: ProgressData): void {
+    console.log('Progress clicked:', progressData);
+    // Navigate to progress/analytics page
+    this.router.navigate(['/analytics'], { 
+      queryParams: { 
+        type: progressData.period,
+        goal: progressData.target 
+      }
+    });
   }
 
   // ================== PERFORMANCE OPTIMIZATION ==================
@@ -374,16 +410,14 @@ export class DashboardComponent implements OnInit {
   }
 
   trackByAction(index: number, action: QuickAction): string {
-    return action.title;
+    return action.id || action.title;
   }
 
-  trackByInsight(index: number, insight: AIInsight): string {
-    return insight.title;
+  trackByInsight(index: number, insight: AIInsightData): string {
+    return `${insight.type}-${insight.title}`;
   }
-
 
   // ================== EVENT HANDLERS FOR NOTE CARDS ==================
-
 
   onTagClick(data: { event: Event; tag: string }): void {
     // Navigate to search page with tag filter
@@ -395,6 +429,6 @@ export class DashboardComponent implements OnInit {
   onNoteMenu(data: { event: Event; noteId: string }): void {
     // Handle note menu actions (bookmark, pin, delete, etc.)
     console.log('Note menu clicked for:', data.noteId);
-    // TODO: Show context menu or dropdown
+   
   }
 }

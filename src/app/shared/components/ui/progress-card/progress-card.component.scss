@@ -1,0 +1,213 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+// Progress bar container enhancements
+.bg-muted {
+  // Enhanced progress track styling
+  position: relative;
+  
+  // Subtle inner shadow for depth
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+  // Smooth transitions using your design tokens
+  transition: 
+    background-color var(--transition-duration) ease,
+    box-shadow var(--transition-duration) ease;
+
+  // Hover effect for interactive progress bars
+  &:hover {
+    background-color: var(--muted);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Progress bar fill enhancements
+.transition-all {
+  // Enhanced transition for smooth progress animations
+  transition: 
+    width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color var(--transition-duration) ease,
+    transform var(--transition-duration) ease;
+
+  // Subtle gradient overlay effect
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 70%
+    );
+    border-radius: inherit;
+    animation: shimmer 2s infinite;
+  }
+}
+
+// Shimmer animation for progress bars
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// Pulse animation for active progress (non-completed)
+.animate-pulse {
+  animation: progress-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes progress-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+// Completion celebration animation
+.bg-success\/10 {
+  animation: celebration-appear 0.5s ease-out;
+  
+  // Subtle celebration pulse
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, transparent, var(--color-success), transparent);
+    border-radius: inherit;
+    opacity: 0.1;
+    animation: celebration-glow 2s ease-in-out infinite;
+  }
+}
+
+@keyframes celebration-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes celebration-glow {
+  0%, 100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+// Streak badge enhancements
+.rounded-full {
+  // Subtle badge glow effect
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+  // Enhanced transitions
+  transition: 
+    transform var(--transition-duration) ease,
+    box-shadow var(--transition-duration) ease;
+
+  // Hover effect for interactive badges
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Card hover effects using your design tokens
+.bg-card {
+  transition: 
+    transform var(--transition-duration) ease,
+    box-shadow var(--transition-duration) ease,
+    border-color var(--transition-duration) ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--border);
+  }
+
+  &:focus-within {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-md);
+  }
+}
+
+// Responsive text sizing adjustments
+@media (max-width: 640px) {
+  .text-lg {
+    font-size: 1rem; // Smaller on mobile
+  }
+  
+  .text-xl {
+    font-size: 1.125rem; // Smaller on mobile
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .bg-muted {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  .transition-all {
+    &::before {
+      display: none; // Remove shimmer in high contrast
+    }
+  }
+}
+
+// Accessibility: Reduce motion for users who prefer it
+@media (prefers-reduced-motion: reduce) {
+  .transition-all,
+  .animate-pulse,
+  .bg-success\/10,
+  .rounded-full,
+  .bg-card {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+  
+  .transition-all::before {
+    display: none;
+  }
+  
+  .bg-card:hover {
+    transform: none !important;
+  }
+}
+
+// Dark mode specific adjustments
+:global(.dark) {
+  .bg-muted {
+    box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.05);
+    
+    &:hover {
+      box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.1);
+    }
+  }
+  
+  .transition-all::before {
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.05) 50%,
+      transparent 70%
+    );
+  }
+}

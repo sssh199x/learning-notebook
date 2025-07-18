@@ -1,0 +1,115 @@
+<div 
+  [class]="cardClasses()"
+  [attr.aria-label]="accessibilityLabel()"
+  [attr.role]="'region'"
+  [attr.aria-live]="loading ? 'polite' : undefined">
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="animate-pulse">
+    <!-- Header skeleton -->
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <div class="w-32 h-5 bg-muted rounded"></div>
+        <div class="w-20 h-6 bg-muted rounded-full"></div>
+      </div>
+      <div class="w-16 h-4 bg-muted rounded"></div>
+    </div>
+    
+    <!-- Progress bar skeleton -->
+    <div class="w-full h-4 bg-muted rounded-full mb-3"></div>
+    
+    <!-- Footer skeleton -->
+    <div class="flex items-center justify-between">
+      <div class="w-40 h-4 bg-muted rounded"></div>
+      <div class="w-20 h-8 bg-muted rounded"></div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading">
+    
+    <!-- Header: Title, Streak Badge, and Progress Text -->
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <h3 [class]="titleClasses()">
+          {{ label }}
+        </h3>
+        
+        <!-- Streak Badge -->
+        <span 
+          *ngIf="streak && streak > 0" 
+          [class]="streakBadgeClasses()">
+          🔥 {{ formatNumber(streak) }} day{{ streak !== 1 ? 's' : '' }}
+        </span>
+      </div>
+      
+      <!-- Progress Numbers -->
+      <span class="text-sm text-muted-foreground">
+        {{ formatNumber(current) }} / {{ formatNumber(target) }} {{ unit }}
+      </span>
+    </div>
+
+    <!-- Progress Bar -->
+    <div 
+      class="w-full bg-muted rounded-full h-4 mb-3 overflow-hidden cursor-pointer"
+      (click)="onProgressClick()"
+      [attr.role]="'progressbar'"
+      [attr.aria-valuenow]="current"
+      [attr.aria-valuemin]="0"
+      [attr.aria-valuemax]="target"
+      [attr.aria-valuetext]="progressPercentage() + '% complete'">
+      
+      <div 
+        [class]="progressBarClasses()"
+        [style.width.%]="getProgressWidth()"
+        [class.animate-pulse]="animated && !isCompleted()">
+        
+        <!-- Shine effect for completed progress -->
+        <div 
+          *ngIf="isCompleted()" 
+          class="absolute inset-0 bg-white/20 rounded-full animate-pulse">
+        </div>
+        
+        <!-- Pulse effect for active progress -->
+        <div 
+          *ngIf="!isCompleted() && animated" 
+          class="absolute inset-0 bg-white/10 rounded-full">
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer: Progress Text and Action Button -->
+    <div class="flex items-center justify-between">
+      <div class="flex-1 min-w-0">
+        <p class="text-sm text-muted-foreground">
+          <span class="font-medium text-foreground">
+            {{ progressPercentage() | number:'1.0-0' }}% complete
+          </span>
+          <span *ngIf="periodText() !== 'total'"> {{ periodText() }}</span>
+          - {{ motivationalMessage() }}
+        </p>
+      </div>
+      
+      <!-- Action Button -->
+      <app-button 
+        *ngIf="actionText && showAction"
+        [variant]="actionVariant"
+        [size]="actionButtonSize()"
+        [icon]="actionIcon"
+        [disabled]="disabled"
+        (clicked)="onActionClick()"
+        [attr.aria-label]="actionText">
+        {{ actionText }}
+      </app-button>
+    </div>
+
+    <!-- Completion Celebration (shown when 100%) -->
+    <div 
+      *ngIf="isCompleted()" 
+      class="mt-4 p-3 bg-success/10 border border-success/20 rounded-lg text-center">
+      <p class="text-sm font-medium text-success">
+        🎉 Congratulations! You've completed your {{ period }} goal!
+      </p>
+    </div>
+  </div>
+</div>

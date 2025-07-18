@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 
 export type EmptyStateSize = 'sm' | 'md' | 'lg';
-export type EmptyStateVariant = 'default' | 'search' | 'error' | 'loading';
+export type EmptyStateVariant = 'default' | 'search' | 'error' | 'success' | 'info';
 
 @Component({
   selector: 'app-empty-state',
@@ -56,7 +56,8 @@ export class EmptyStateComponent {
       default: '',
       search: 'border-info/20 bg-info/5',
       error: 'border-danger/20 bg-danger/5',
-      loading: 'border-warning/20 bg-warning/5'
+      success: 'border-success/20 bg-success/5',
+      info: 'border-accent/20 bg-accent/5'
     };
 
     return `${base} ${sizeClasses[this.size]} ${variantClasses[this.variant]}`;
@@ -75,7 +76,8 @@ export class EmptyStateComponent {
       default: 'bg-muted',
       search: 'bg-info/10',
       error: 'bg-danger/10', 
-      loading: 'bg-warning/10'
+      success: 'bg-success/10',
+      info: 'bg-accent/10'
     };
 
     return `${base} ${sizeClasses[this.size]} ${variantClasses[this.variant]}`;
